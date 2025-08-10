@@ -1,0 +1,122 @@
+/* Override body background if needed */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Bootstrap sets bg-light on body, so keep that or override */
+  }
+  
+  /* Chat window styles */
+  #chat-window {
+    background-color: #fdfdfd; /* light background */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%; /* fill flex-grow */
+    overflow-y: auto;
+  }
+  
+  /* Message boxes */
+  .message-box {
+    max-width: 75%;
+    line-height: 1.4;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    word-wrap: break-word;
+    border-radius: 18px 18px 0 18px;
+    padding: 12px 16px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+  }
+  
+  /* User messages aligned right with blue background */
+  .user-message {
+    align-self: flex-end;
+    background-color: #d0ebff;
+    color: #003366;
+  }
+  
+  /* Bot messages aligned left */
+  .bot-message {
+    align-self: flex-start;
+    background-color: #e3f5e3;
+    color: #003366;
+    border-radius: 0 18px 18px 18px;
+    padding: 10px 15px;
+    max-width: 75%;
+    line-height: 1.4;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    word-wrap: break-word;
+  }
+  
+  /* Tone-specific bot backgrounds */
+  .bot-friendly {
+    background-color: #e3f5e3 !important; /* soft green */
+  }
+  
+  .bot-professional {
+    background-color: #f0f0f0 !important; /* light gray */
+  }
+  
+  .bot-funny {
+    background-color: #fff3cd !important; /* soft yellow */
+  }
+  
+  .bot-motivational {
+    background-color: #e0f7fa !important; /* soft cyan */
+  }
+  
+  /* Input box height (Bootstrap default is good, just add some padding) */
+  #user-input {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  
+  /* Ripple overlay */
+  .ripple-overlay {
+    position: fixed; /* fixed so it covers viewport */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1050; /* above Bootstrap modals */
+  }
+  
+  .ripple-show {
+    animation: rippleAnim 0.6s ease-out;
+  }
+  
+  @keyframes rippleAnim {
+    0% {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+  
+  /* Optional: system message style */
+  .system-message {
+    align-self: center;
+    background-color: #f0f0f0;
+    color: #666;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-style: italic;
+    font-size: 13px;
+    max-width: 80%;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Typing animation dots */
+  .typing::after {
+    content: " .";
+    animation: dots 1s steps(3, end) infinite;
+  }
+  
+  @keyframes dots {
+    0% { content: " ."; }
+    33% { content: " .."; }
+    66% { content: " ..."; }
+  }
+  
