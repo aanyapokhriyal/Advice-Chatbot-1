@@ -15,11 +15,20 @@ An AI-powered Advice Chatbot that provides personalized, tone-based responses. B
 - Backend: Python (Flask)
 - AI: Groq API
 
+
+## Project Structure
+
+- `app.py`: Flask backend serving API and frontend
+- `templates/index.html`: Main HTML file served by Flask
+- `static/style.css`: CSS styles
+- `static/script.js`: JavaScript logic
+- `.env`: Stores your Groq API key (not tracked by git)
+
 ## Setup Instructions
 
 1. Clone the repository:
 	```
-	git clone https://github.com/aanyapokhriyal/Advice-Chatbot-.git
+	git clone https://github.com/aanyapokhriyal/Advice-Chatbot-1.git
 	```
 2. Install Python dependencies:
 	```
@@ -29,13 +38,15 @@ An AI-powered Advice Chatbot that provides personalized, tone-based responses. B
 	```
 	python app.py
 	```
-4. Open `index.html` in your browser.
+4. Open your browser and go to `http://127.0.0.1:5000/`.
+
 
 ## Usage
 
-- Enter your name and select a tone.
-- Type your question and get instant advice.
-- The chatbot remembers recent topics for better context.
+- Select a tone and type your question to get instant advice.
+- The chatbot stores your chat history and recent topics in your browser's localStorage.
+- Old chats are saved but not displayed automatically when you reload the page.
+- You can extend the app to show past chats on demand if desired.
 
 ## License
 

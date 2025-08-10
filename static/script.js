@@ -16,7 +16,7 @@ const toneInstructions = {
 };
 
 // Show previous messages on load
-memory.forEach(entry => appendMessage(entry.sender, entry.message));
+// Do not display previous messages on load
 
 // Event listeners
 sendBtn.addEventListener("click", handleSend);
@@ -101,7 +101,7 @@ async function generateAdvice(userMessage) {
   ];
 
   try {
-    const response = await fetch("http://127.0.0.1:5000/api/advice", {
+  const response = await fetch("/api/advice", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
