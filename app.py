@@ -3,12 +3,12 @@ import os
 from flask import Flask, request, jsonify, render_template
 import requests
 from dotenv import load_dotenv
-#from flask_cors import CORS
+from flask_cors import CORS
 
 load_dotenv()
 
 app = Flask(__name__)
-#CORS(app)
+CORS(app)
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 @app.route('/')
