@@ -2,9 +2,7 @@ const chatWindow = document.getElementById("chat-window");
 const userInput = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
 const toneSelect = document.getElementById("tone");
-const rippleOverlay = document.getElementById("ripple-overlay");
 
-// Load memory from localStorage or initialize empty array
 let memory = JSON.parse(localStorage.getItem("chatMemory")) || [];
 let recentTopics = JSON.parse(localStorage.getItem("recentTopics")) || [];
 
@@ -15,21 +13,12 @@ const toneInstructions = {
   motivational: "You are a deeply motivational coach that inspires and uplifts."
 };
 
-// Show previous messages on load
-// Do not display previous messages on load
-
-// Event listeners
 sendBtn.addEventListener("click", handleSend);
-userInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") handleSend();
-});
+userInput.addEventListener("keydown", e => { if (e.key === "Enter") handleSend(); });
 
+// Tone change listener (no ripple)
 toneSelect.addEventListener("change", () => {
-  // Ripple animation
-  rippleOverlay.classList.add("ripple-show");
-  rippleOverlay.addEventListener("animationend", () => {
-    rippleOverlay.classList.remove("ripple-show");
-  }, { once: true });
+  // Optional: add any tone-change-related logic here
 });
 
 async function handleSend() {
@@ -51,7 +40,6 @@ async function handleSend() {
 
   const response = await generateAdvice(msg);
 
-  // Remove typing message
   const lastChild = chatWindow.lastChild;
   if (lastChild && lastChild.classList.contains("typing")) {
     chatWindow.removeChild(lastChild);
@@ -75,10 +63,7 @@ function appendMessage(sender, message, isTyping = false) {
   }
 
   msgDiv.textContent = message;
-
-  if (isTyping) {
-    msgDiv.classList.add("typing");
-  }
+  if (isTyping) msgDiv.classList.add("typing");
 
   chatWindow.appendChild(msgDiv);
   chatWindow.scrollTo({ top: chatWindow.scrollHeight, behavior: 'smooth' });
@@ -94,22 +79,14 @@ async function generateAdvice(userMessage) {
       role: "system",
       content: `${toneInstructions[tone]} Your user is ${userName}. Keep replies brief, ideally under 30 words. Recent topics: ${topicMemory}`
     },
-    {
-      role: "user",
-      content: userMessage
-    }
+    { role: "user", content: userMessage }
   ];
 
   try {
-  const response = await fetch("/api/advice", {
+    const response = await fetch("/api/advice", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "llama3-70b-8192",
-        messages: messages
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ model: "llama3-70b-8192", messages })
     });
 
     const data = await response.json();
@@ -117,9 +94,7 @@ async function generateAdvice(userMessage) {
       console.error("Groq Error:", data.error);
       return "Sorry, something went wrong: " + data.error.message;
     }
-
     return data.choices[0].message.content.trim();
-
   } catch (error) {
     console.error("Fetch Error:", error);
     return "Sorry, I couldn't connect to the advice server.";
