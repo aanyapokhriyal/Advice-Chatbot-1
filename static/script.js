@@ -13,6 +13,9 @@ const toneInstructions = {
   motivational: "You are a deeply motivational coach that inspires and uplifts."
 };
 
+// Default model to use for requests (changeable)
+const DEFAULT_MODEL = "llama-3.3-70b-versatile";
+
 sendBtn.addEventListener("click", handleSend);
 userInput.addEventListener("keydown", e => { if (e.key === "Enter") handleSend(); });
 
@@ -86,7 +89,7 @@ async function generateAdvice(userMessage) {
     const response = await fetch("/api/advice", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "llama3-70b-8192", messages })
+      body: JSON.stringify({ model: DEFAULT_MODEL, messages })
     });
 
     const data = await response.json();
