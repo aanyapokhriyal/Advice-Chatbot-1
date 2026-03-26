@@ -1,4 +1,3 @@
-
 import os
 from flask import Flask, request, jsonify, render_template
 import requests
@@ -9,8 +8,8 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
+
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-# Default model and optional comma-separated fallback list (set via .env)
 DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "llama-3.3-70b-versatile")
 FALLBACK_MODELS = os.getenv("FALLBACK_MODELS", DEFAULT_MODEL).split(",")
 
@@ -23,6 +22,7 @@ def get_advice():
     data = request.json
     messages = data.get('messages')
     model = data.get('model') or DEFAULT_MODEL
+
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
         "Content-Type": "application/json"
@@ -36,14 +36,13 @@ def get_advice():
             json=payload
         )
 
-    # First attempt
     response = call_model(model)
+
     try:
         json_resp = response.json()
     except ValueError:
         json_resp = {"error": {"message": response.text}}
 
-    # Detect deprecation / decommission errors or HTTP error statuses and try fallbacks
     resp_text = str(json_resp).lower()
     if (response.status_code >= 400) or ("deprec" in resp_text) or ("decommission" in resp_text):
         for fallback in FALLBACK_MODELS:
@@ -57,11 +56,10 @@ def get_advice():
                 retry_json = {"error": {"message": retry.text}}
             if retry.ok:
                 return jsonify(retry_json)
-        # If no fallback succeeded, return the original response and status
         return jsonify(json_resp), response.status_code
 
     return jsonify(json_resp)
 
 if __name__ == "__main__":
-    import os
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=True)
+    debug_mode = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=debug_mode)
